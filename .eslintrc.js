@@ -34,8 +34,12 @@ module.exports = {
   rules: {
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
-    'no-console': 'error',
+    'no-console': 0,
     'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.ts'] }],
+    'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+    'react/jsx-props-no-spreading': 'off',
+    'import/prefer-default-export': 'off',
+    'no-unused-vars': 'warn',
     'react/react-in-jsx-scope': 'off', // suppress errors for missing 'import React' in files
     'prettier/prettier': [
       'error',
