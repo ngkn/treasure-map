@@ -1,13 +1,33 @@
-import { FormReadFile } from 'components'
+import { useState } from 'react'
+import { GameProvider } from 'context/gameContext'
+
+import { FormInstructions, Map } from 'components'
 
 import 'styles/App.css'
 
-function App() {
+const App = () => {
+  const [displayMap, setDisplayMap] = useState(false)
+
+  const handleMapCreation = (isInstructionsValid: boolean) => {
+    if (isInstructionsValid) setDisplayMap(true)
+  }
+
   return (
     <div className="App">
-      <div>treasure map</div>
-
-      <FormReadFile />
+      <GameProvider>
+        <div>treasure map</div>
+        <div className="GameContainer">
+          <div>
+            <FormInstructions handleMapCreation={handleMapCreation} />
+          </div>
+          {displayMap && (
+            <div>
+              <Map />
+            </div>
+          )}
+          <div />
+        </div>
+      </GameProvider>
     </div>
   )
 }

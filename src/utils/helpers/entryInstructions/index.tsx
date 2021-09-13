@@ -43,7 +43,8 @@ export function stringToArray(line: string): string[] {
  *
  * @returns {boolean} map instruction is correct or not
  */
-export function mapInstructionValidation(mapInstruction: string, instructionsTotal: number): boolean {
+export function mapInstructionValidation(mapInstruction: string, instructionsTotal: number): Record<string, unknown> {
+  let mapSize = {}
   // Structure validation
   const REGEX_STRUCTURE_MAP_VALIDATION = /^[Cc]\s-\s[1-9]\s-\s[1-9]$/gm
   const isMapStructureValid = REGEX_STRUCTURE_MAP_VALIDATION.test(mapInstruction)
@@ -60,7 +61,13 @@ export function mapInstructionValidation(mapInstruction: string, instructionsTot
 
   const isMapInstructionValid = isMapStructureValid && isRectangularMap && isNumberOfElementsValid
 
-  return isMapInstructionValid
+  if (isMapInstructionValid) {
+    mapSize = {
+      width: firstNumber,
+      length: secondNumber,
+    }
+  }
+  return mapSize
 }
 
 /**
@@ -72,8 +79,14 @@ export function mapInstructionValidation(mapInstruction: string, instructionsTot
  *
  * @returns {boolean} map instruction is correct or not
  */
-export function elementsInstructionsValidation(elementsInstructions: string[], mapLineInstruction: string): boolean {
+export function elementsInstructionsValidation(
+  elementsInstructions: string[],
+  mapLineInstruction: string,
+): Record<string, unknown> {
   let isElementsValid = true
+  const mountainsCoords: any[] = []
+  const treasuresCoords: any[] = []
+  const adventurerCoords: any[] = []
 
   const mapLineInstructionArray = stringToArray(mapLineInstruction)
   const mapInstructionWidthNumber = Number(mapLineInstructionArray[1])
@@ -84,7 +97,9 @@ export function elementsInstructionsValidation(elementsInstructions: string[], m
 
     const elementInstruction = stringToArray(instruction)
     const isAdventurerInstruction = /^[Aa]/.test(instruction)
-    const isMountainOrTreasureInstruction = /^[Mm]/.test(instruction) || /^[Tt]/.test(instruction)
+    const isMountainInstruction = /^[Mm]/.test(instruction)
+    const isTreasureInstruction = /^[Tt]/.test(instruction)
+
     const isMapInstruction = /^[Cc]/.test(instruction)
 
     const isMountainStructureValid = validateMountain(instruction)
@@ -97,16 +112,50 @@ export function elementsInstructionsValidation(elementsInstructions: string[], m
     }
 
     // Get coords depends on element type
-    if (isAdventurerInstruction) coords = elementInstruction[2] + elementInstruction[3]
-    if (isMountainOrTreasureInstruction) coords = elementInstruction[1] + elementInstruction[2]
+    if (isMountainInstruction) {
+      coords = elementInstruction[1] + elementInstruction[2]
+
+      mountainsCoords.push({ horizontally: elementInstruction[1], vertically: elementInstruction[2] })
+    }
+    if (isTreasureInstruction) {
+      coords = elementInstruction[1] + elementInstruction[2]
+
+      treasuresCoords.push({
+        horizontally: elementInstruction[1],
+        vertically: elementInstruction[2],
+        total: elementInstruction[3],
+      })
+    }
+    if (isAdventurerInstruction) {
+      coords = elementInstruction[2] + elementInstruction[3]
+      adventurerCoords.push({
+        name: elementInstruction[1],
+        horizontally: elementInstruction[2],
+        vertically: elementInstruction[3],
+        orientation: elementInstruction[4],
+        movement: elementInstruction[5],
+      })
+    }
+
     if (isMapInstruction) isElementsValid = false
 
     // check if coord element are not out of map coords
-    if (
-      Number(elementInstruction[1]) > mapInstructionWidthNumber ||
-      Number(elementInstruction[2]) > mapInstructionLengthNumber
-    ) {
-      isElementsValid = false
+    if (isMountainInstruction || isTreasureInstruction) {
+      if (
+        Number(elementInstruction[1]) > mapInstructionWidthNumber ||
+        Number(elementInstruction[2]) > mapInstructionLengthNumber
+      ) {
+        isElementsValid = false
+      }
+    }
+
+    if (isAdventurerInstruction) {
+      if (
+        Number(elementInstruction[2]) > mapInstructionWidthNumber ||
+        Number(elementInstruction[3]) > mapInstructionLengthNumber
+      ) {
+        isElementsValid = false
+      }
     }
 
     return coords
@@ -117,7 +166,10 @@ export function elementsInstructionsValidation(elementsInstructions: string[], m
 
   if (isDuplicate) isElementsValid = false
 
-  return isElementsValid
+  return {
+    isElementsValid,
+    elements: { mountains: mountainsCoords, treasures: treasuresCoords, adventurer: adventurerCoords },
+  }
 }
 
 /**
@@ -127,20 +179,19 @@ export function elementsInstructionsValidation(elementsInstructions: string[], m
  *
  * @returns {boolean} all instructions are valid or not
  */
-export function instructionsValidation(instructions: string[]): boolean {
+export function instructionsValidation(instructions: string[]): any {
   const instructionsCopy = [...instructions] // avoid side-effect, no change by reference
   const mapLineInstruction = instructionsCopy.shift() || ''
   const fileLineNumbers = instructionsCopy.length
 
   // Map line validation
-  const isMapInstructionValid = mapInstructionValidation(mapLineInstruction, fileLineNumbers)
+  const mapValid = mapInstructionValidation(mapLineInstruction, fileLineNumbers)
+  const mapSize = [mapValid]
 
-  if (!isMapInstructionValid) return false
+  if (Object.keys(mapSize[0]).length === 0 && mapSize[0].constructor === Object) return {}
 
   // Elements lines validation
   const isElementsValid = elementsInstructionsValidation(instructionsCopy, mapLineInstruction)
 
-  console.log('isElementsValid :>> ', isElementsValid)
-
-  return isElementsValid
+  return { mapValid, isElementsValid }
 }

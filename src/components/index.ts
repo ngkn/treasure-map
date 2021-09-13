@@ -1,4 +1,4 @@
-import FormReadFile from './Form/FormReadFile'
+import Map from 'components/Map'
+import FormInstructions from './Form/FormInstructions'
 
-// eslint-disable-next-line import/prefer-default-export
-export { FormReadFile }
+export { FormInstructions, Map }
