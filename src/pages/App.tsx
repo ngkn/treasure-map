@@ -15,8 +15,8 @@ const App = () => {
   return (
     <div className="App">
       <GameProvider>
-        <div>treasure map</div>
         <div className="GameContainer">
+          <div>Treasure map</div>
           <div>
             <FormInstructions handleMapCreation={handleMapCreation} />
           </div>

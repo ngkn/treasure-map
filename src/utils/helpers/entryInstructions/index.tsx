@@ -92,7 +92,7 @@ export function elementsInstructionsValidation(
   const mapInstructionWidthNumber = Number(mapLineInstructionArray[1])
   const mapInstructionLengthNumber = Number(mapLineInstructionArray[2])
 
-  const coordsElements = elementsInstructions.map((instruction: string) => {
+  const coordsElements = elementsInstructions.map((instruction: string, index: number) => {
     let coords
 
     const elementInstruction = stringToArray(instruction)
@@ -115,25 +115,29 @@ export function elementsInstructionsValidation(
     if (isMountainInstruction) {
       coords = elementInstruction[1] + elementInstruction[2]
 
-      mountainsCoords.push({ horizontally: elementInstruction[1], vertically: elementInstruction[2] })
+      mountainsCoords.push({
+        horizontally: Number(elementInstruction[1]) !== 0 ? Number(elementInstruction[1]) - 1 : 0,
+        vertically: Number(elementInstruction[2]) !== 0 ? Number(elementInstruction[2]) - 1 : 0,
+      })
     }
     if (isTreasureInstruction) {
       coords = elementInstruction[1] + elementInstruction[2]
 
       treasuresCoords.push({
-        horizontally: elementInstruction[1],
-        vertically: elementInstruction[2],
-        total: elementInstruction[3],
+        horizontally: Number(elementInstruction[1]) !== 0 ? Number(elementInstruction[1]) - 1 : 0,
+        vertically: Number(elementInstruction[2]) !== 0 ? Number(elementInstruction[2]) - 1 : 0,
+        total: Number(elementInstruction[3]),
       })
     }
     if (isAdventurerInstruction) {
       coords = elementInstruction[2] + elementInstruction[3]
       adventurerCoords.push({
         name: elementInstruction[1],
-        horizontally: elementInstruction[2],
-        vertically: elementInstruction[3],
+        horizontally: Number(elementInstruction[2]) !== 0 ? Number(elementInstruction[2]) - 1 : 0,
+        vertically: Number(elementInstruction[3]) !== 0 ? Number(elementInstruction[3]) - 1 : 0,
         orientation: elementInstruction[4],
         movement: elementInstruction[5],
+        priority: index + 1,
       })
     }
 
@@ -168,7 +172,7 @@ export function elementsInstructionsValidation(
 
   return {
     isElementsValid,
-    elements: { mountains: mountainsCoords, treasures: treasuresCoords, adventurer: adventurerCoords },
+    elements: { mountains: mountainsCoords, treasures: treasuresCoords, adventurers: adventurerCoords },
   }
 }
 

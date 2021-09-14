@@ -1,5 +1,8 @@
 .App {
+  display: flex;
+  flex-direction: column;
   text-align: center;
+  min-height: 100vh;
 }
 
 .App-logo {
@@ -37,7 +40,25 @@
   }
 }
 
+.gameContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
 .mapContainer {
   display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mapWrapper {
+  display: flex;
   justify-content: space-between;
+}
+
+.mapItem {
+  width: 4em;
+  height: 4em;
 }

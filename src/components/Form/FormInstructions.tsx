@@ -10,7 +10,7 @@ import { useGame } from 'context/gameContext'
 const FormInstructions = ({ handleMapCreation }: FormInstructionsType) => {
   const refTextArea = useRef<HTMLTextAreaElement>(null) // Uncontrolled Components
   const [createMap, setCreateMap] = useState<null | boolean>(null)
-  const { setWidthMap, setLengthMap, setMountains } = useGame()
+  const { setWidthMap, setLengthMap, setMountains, setTreasures, setAdventurers } = useGame()
 
   const handleOnSubmit = (event: FormEvent) => {
     if (!refTextArea.current) return
@@ -26,6 +26,8 @@ const FormInstructions = ({ handleMapCreation }: FormInstructionsType) => {
       setWidthMap(isInstructionsValid.mapValid.width)
       setLengthMap(isInstructionsValid.mapValid.length)
       setMountains(isInstructionsValid.isElementsValid.elements.mountains)
+      setTreasures(isInstructionsValid.isElementsValid.elements.treasures)
+      setAdventurers(isInstructionsValid.isElementsValid.elements.adventurers)
       setCreateMap(true)
     }
 
