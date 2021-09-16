@@ -8,7 +8,17 @@ import { addAdventurer, addMountain, addTreasure } from 'utils/helpers/map'
 import { moveAdventurers } from 'utils/helpers/map/movments'
 
 const Map = () => {
-  const { widthMap, lengthMap, mountains, treasures, adventurers, getRemainingMoves, setAdventurers } = useGame()
+  const {
+    widthMap,
+    lengthMap,
+    mountains,
+    treasures,
+    adventurers,
+    isAlreadyAMap,
+    getRemainingMoves,
+    setAdventurers,
+    setisAlreadyAMap,
+  } = useGame()
 
   const mapDefault = new Array(lengthMap).fill(null).map((_, x: number) =>
     new Array(widthMap).fill(null).map((__, y: number) => ({
@@ -24,24 +34,33 @@ const Map = () => {
 
   const [remaininMoves, setRemaininMoves] = useState<number>()
 
+  const resetMap = () => {
+    setMap(mapDefault)
+    setisAlreadyAMap(false)
+  }
+
   // Gestion des éléments dans la map
   useEffect(() => {
-    if (mountains) {
-      const newMap = addMountain(map, mountains)
-      setMap([...newMap])
-    }
-    if (treasures) {
-      const newMap = addTreasure(map, treasures)
-      setMap([...newMap])
-    }
-    if (adventurers) {
-      const newMap = addAdventurer(map, adventurers)
-      setMap([...newMap])
+    if (isAlreadyAMap) {
+      resetMap()
+    } else {
+      if (mountains) {
+        const newMap = addMountain(map, mountains)
+        setMap([...newMap])
+      }
+      if (treasures) {
+        const newMap = addTreasure(map, treasures)
+        setMap([...newMap])
+      }
+      if (adventurers) {
+        const newMap = addAdventurer(map, adventurers)
+        setMap([...newMap])
 
-      setRemaininMoves(getRemainingMoves())
+        setRemaininMoves(getRemainingMoves())
+      }
     }
-  }, [mountains, treasures, adventurers])
-  //   }, [mountains, treasures, adventurers]) // A retirer plus tard ?
+  }, [mountains, treasures, adventurers, isAlreadyAMap])
+  //  }, [mountains, treasures, adventurers]) // A retirer plus tard ?
 
   // Gestion des mouvements dans la map
   useEffect(() => {

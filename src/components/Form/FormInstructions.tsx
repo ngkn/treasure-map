@@ -10,7 +10,7 @@ import { useGame } from 'context/gameContext'
 const FormInstructions = ({ handleMapCreation }: FormInstructionsType) => {
   const refTextArea = useRef<HTMLTextAreaElement>(null) // Uncontrolled Components
   const [createMap, setCreateMap] = useState<null | boolean>(null)
-  const { setWidthMap, setLengthMap, setMountains, setTreasures, setAdventurers } = useGame()
+  const { setWidthMap, setLengthMap, setMountains, setTreasures, setAdventurers, setisAlreadyAMap } = useGame()
 
   const handleOnSubmit = (event: FormEvent) => {
     if (!refTextArea.current) return
@@ -23,6 +23,8 @@ const FormInstructions = ({ handleMapCreation }: FormInstructionsType) => {
       isInstructionsValid.constructor === Object &&
       isInstructionsValid.isElementsValid.isElementsValid
     ) {
+      if (createMap) setisAlreadyAMap(true)
+
       setWidthMap(isInstructionsValid.mapValid.width)
       setLengthMap(isInstructionsValid.mapValid.length)
       setMountains(isInstructionsValid.isElementsValid.elements.mountains)
@@ -30,8 +32,6 @@ const FormInstructions = ({ handleMapCreation }: FormInstructionsType) => {
       setAdventurers(isInstructionsValid.isElementsValid.elements.adventurers)
       setCreateMap(true)
     }
-
-    // setCreateMap(isInstructionsValid)
 
     event.preventDefault()
   }

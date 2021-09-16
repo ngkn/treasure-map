@@ -18,6 +18,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const [treasures, setTreasures_] = useState<TreasureType[]>([])
   const [adventurers, setAdventurer_] = useState<AdventurerType[]>([])
 
+  const [isAlreadyAMap, setisAlreadyAMap_] = useState(false)
+
+  function setisAlreadyAMap(boolean: boolean) {
+    setisAlreadyAMap_(boolean)
+  }
+
   function setWidthMap(number: number) {
     setWidthMap_(number)
   }
@@ -72,12 +78,14 @@ export function GameProvider({ children }: { children: ReactNode }) {
         mountains,
         treasures,
         adventurers,
+        isAlreadyAMap,
         setWidthMap,
         setLengthMap,
         setMountains,
         setTreasures,
         setAdventurers,
         getRemainingMoves,
+        setisAlreadyAMap,
       }}
     >
       {children}
