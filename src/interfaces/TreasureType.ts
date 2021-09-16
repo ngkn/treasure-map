@@ -1,5 +1,5 @@
 type TreasureType = {
-  id: string
+  idTreasure: string
   horizontally: number
   vertically: number
   total: number

@@ -82,11 +82,14 @@ function filterMovement(
   mapUpdated: any,
   widthMap: any,
   lengthMap: any,
+  treasures: any,
 ) {
   const adventurersNew = [...adventurersWithA]
 
   const mapUp = [...mapUpdated]
   const advUpdateAgain = [...adventurersUpdated]
+
+  const treasuresUpdt = [...treasures]
 
   const adventurerThatWillMove: any = checkDuplicateMove(adventurersNew)
 
@@ -115,6 +118,17 @@ function filterMovement(
                 adventurer.horizontally = adventurerAfterMoved.horizontally
                 adventurer.vertically = adventurerAfterMoved.vertically
 
+                // Update treasure
+                treasuresUpdt.forEach((treasure) => {
+                  if (
+                    treasure.idTreasure ===
+                    mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].idTreasure
+                  ) {
+                    // idTreasure
+                    if (treasure.total > 0) treasure.total -= 1
+                  }
+                })
+
                 // Add property of the player in the array case
                 mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].type = 'treasureAdventurer'
                 mapUp[adventurer.vertically][adventurer.horizontally].id = adventurer.id
@@ -123,7 +137,8 @@ function filterMovement(
                 mapUp[adventurer.vertically][adventurer.horizontally].orientation = adventurer.orientation
                 mapUp[adventurer.vertically][adventurer.horizontally].movements = adventurer.movements
                 mapUp[adventurer.vertically][adventurer.horizontally].priority = adventurer.priority
-                mapUp[adventurer.vertically][adventurer.horizontally].treasureRecovered = adventurer.treasureRecovered
+                mapUp[adventurer.vertically][adventurer.horizontally].treasureRecovered =
+                  adventurer.treasureRecovered + 1
                 mapUp[adventurer.vertically][adventurer.horizontally].isAdventurer = true
               }
             }
@@ -156,20 +171,22 @@ function filterMovement(
                 y: adventurerOldCoords.vertically,
               }
             }
-            if (mapUp[adventurerOldCoords.vertically][adventurerOldCoords.horizontally].isAdventurer) {
+            if (mapUp[adventurerOldCoords.vertically][adventurerOldCoords.horizontally] === 'treasureAdventurer') {
               // Check symbol later
-              mapUp[adventurerOldCoords.vertically][adventurerOldCoords.horizontally] = {
-                ...{
-                  id: null,
-                  type: 'treasure',
-                  symbol: 'T',
-                  orientation: null,
-                  movements: null,
-                  priority: null,
-                  treasureRecovered: null,
-                  isAdventurer: false,
-                },
-              }
+              const { idTreasure } = mapUp[adventurerOldCoords.vertically][adventurerOldCoords.horizontally]
+
+              mapUp[adventurerOldCoords.vertically][adventurerOldCoords.horizontally] = {}
+
+              treasuresUpdt.forEach((treasure: any) => {
+                if (treasure.idTreasure === idTreasure) {
+                  mapUp[adventurerOldCoords.vertically][adventurerOldCoords.horizontally] = {
+                    idTreasure: treasure.idTreasure,
+                    type: 'treasure',
+                    symbol: `T(${treasure.total})`,
+                    total: treasure.total,
+                  }
+                }
+              })
             }
 
             adventurer.movements = adventurer.movements.substring(1)
@@ -211,15 +228,13 @@ export function moveAdventurers(
   adventurers: AdventurerType[],
   widthMap: any,
   lengthMap: any,
+  treasures: any,
 ): Record<string, any> {
   const adventurersWithA: any = []
 
   let adventurersUpdated: any = [...adventurers]
 
   let mapUpdated: any = [...map]
-
-  console.log('adventurers :>> ', adventurers)
-  console.log('map :>> ', map)
 
   // Check first if there's no conflicts
   // Check only adventurers with A
@@ -247,6 +262,7 @@ export function moveAdventurers(
       mapUpdated,
       widthMap,
       lengthMap,
+      treasures,
     )
 
     adventurersUpdated = [...advUpdateAgain]

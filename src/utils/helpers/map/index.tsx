@@ -14,7 +14,7 @@ export function addTreasure(map: any, treasures: any) {
   const newMap = [...map]
 
   treasures.forEach((treasure: any) => {
-    newMap[treasure.vertically][treasure.horizontally].id = treasure.id
+    newMap[treasure.vertically][treasure.horizontally].idTreasure = treasure.idTreasure
     newMap[treasure.vertically][treasure.horizontally].type = 'treasure'
     newMap[treasure.vertically][treasure.horizontally].symbol = `T(${treasure.total})`
     newMap[treasure.vertically][treasure.horizontally].total = treasure.total
@@ -33,7 +33,7 @@ export function addAdventurer(map: any, adventurers: any) {
     newMap[adventurer.vertically][adventurer.horizontally].orientation = adventurer.orientation
     newMap[adventurer.vertically][adventurer.horizontally].movements = adventurer.movements
     newMap[adventurer.vertically][adventurer.horizontally].priority = adventurer.priority
-    newMap[adventurer.vertically][adventurer.horizontally].treasureRecovered = adventurer.treasureRecovered
+    newMap[adventurer.vertically][adventurer.horizontally].treasureRecovered = 0
     newMap[adventurer.vertically][adventurer.horizontally].isAdventurer = true
   })
 
