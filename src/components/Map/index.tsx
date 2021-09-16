@@ -2,13 +2,14 @@ import { useGame } from 'context/gameContext'
 import React, { useEffect, useState } from 'react'
 
 import { addAdventurer, addMountain, addTreasure } from 'utils/helpers/map'
+import { moveAdventurers } from 'utils/helpers/map/movments'
 
 const Map = () => {
-  const { widthMap, lengthMap, mountains, treasures, adventurers } = useGame()
+  const { widthMap, lengthMap, mountains, treasures, adventurers, getRemainingMoves, setAdventurers } = useGame()
 
   const [map, setMap] = useState(
-    new Array(widthMap).fill(null).map((_, x: number) =>
-      new Array(lengthMap).fill(null).map((__, y: number) => ({
+    new Array(lengthMap).fill(null).map((_, x: number) =>
+      new Array(widthMap).fill(null).map((__, y: number) => ({
         type: 'plain',
         symbol: '*',
         isAdventurer: false,
@@ -18,34 +19,45 @@ const Map = () => {
     ),
   )
 
+  const [remaininMoves, setRemaininMoves] = useState<number>()
+
+  // Gestion des éléments dans la map
   useEffect(() => {
     if (mountains) {
       const newMap = addMountain(map, mountains)
-      setMap([...map, newMap])
+      setMap([...newMap])
     }
     if (treasures) {
       const newMap = addTreasure(map, treasures)
-      setMap([...map, newMap])
+      setMap([...newMap])
     }
     if (adventurers) {
       const newMap = addAdventurer(map, adventurers)
-      setMap([...map, newMap])
-    }
-  }, [mountains, treasures, adventurers])
+      setMap([...newMap])
 
-  // const addMountain = () => {
-  //   mountains.forEach((mountain) => {
-  //     setMap(
-  //       map.map((x) =>
-  //         x.map((y) =>
-  //           y.x === mountain.horizontally && y.y === mountain.vertically
-  //             ? { ...y, type: 'mountain', symbol: 'M' }
-  //             : { ...y },
-  //         ),
-  //       ),
-  //     )
-  //   })
-  // }
+      setRemaininMoves(getRemainingMoves())
+    }
+
+    console.log('remaininMoves :>> ', remaininMoves)
+  }, [mountains, treasures, adventurers])
+  //   }, [mountains, treasures, adventurers]) // A retirer plus tard ?
+
+  // Gestion des mouvements dans la map
+  useEffect(() => {
+    if (remaininMoves) {
+      const id = setTimeout(() => {
+        const { mapUpdated, adventurersUpdated } = moveAdventurers(map, adventurers, widthMap, lengthMap)
+
+        setMap([...mapUpdated])
+        setAdventurers([...adventurersUpdated])
+      }, 1000)
+
+      return () => clearTimeout(id)
+    }
+    return undefined
+  }, [remaininMoves])
+
+  // ----test---
 
   return (
     <div className="mapContainer">

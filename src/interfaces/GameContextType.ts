@@ -13,6 +13,7 @@ type GameContextType = {
   setMountains: (mountain: MountainType[]) => void
   setTreasures: (treasure: TreasureType[]) => void
   setAdventurers: (adventurer: AdventurerType[]) => void
+  getRemainingMoves: () => number
 }
 
 export default GameContextType

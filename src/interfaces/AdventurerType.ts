@@ -1,7 +1,10 @@
 type AdventurerType = {
+  id: string
   horizontally: number
   vertically: number
-  total: number
+  movements: string
+  orientation: string
+  treasureRecovered: number
   type: string
   priority: number
 }

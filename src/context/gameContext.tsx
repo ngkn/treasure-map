@@ -38,6 +38,32 @@ export function GameProvider({ children }: { children: ReactNode }) {
     setAdventurer_(adventurer)
   }
 
+  // Set infos adventures
+  // function updateAdventurerMove(adventurerUpdate: AdventurerType) {
+  //   const adventurersNews = [...adventurers]
+
+  //   adventurersNews.forEach((adventurer)=>
+  //   adventurer.id === adventurerUpdate.id && {
+  //     adventurer.horizontally = adventurerUpdate.id
+  //     adventurer.vertically = adventurer.horizontally.id
+  //   }
+  //   )
+
+  //   setAdventurer_([...adventurersNews])
+  // }
+
+  // sEt treasure Info
+
+  function getRemainingMoves() {
+    let total
+    if (adventurers) {
+      const moves = adventurers.map((adventurer) => adventurer.movements.length)
+
+      total = moves.reduce((a, b) => a + b, 0)
+    }
+    return total || 0
+  }
+
   return (
     <GameContext.Provider
       value={{
@@ -51,6 +77,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         setMountains,
         setTreasures,
         setAdventurers,
+        getRemainingMoves,
       }}
     >
       {children}

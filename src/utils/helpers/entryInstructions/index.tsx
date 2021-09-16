@@ -116,6 +116,7 @@ export function elementsInstructionsValidation(
       coords = elementInstruction[1] + elementInstruction[2]
 
       mountainsCoords.push({
+        id: `mountain-${index}`,
         horizontally: Number(elementInstruction[1]) !== 0 ? Number(elementInstruction[1]) - 1 : 0,
         vertically: Number(elementInstruction[2]) !== 0 ? Number(elementInstruction[2]) - 1 : 0,
       })
@@ -124,6 +125,7 @@ export function elementsInstructionsValidation(
       coords = elementInstruction[1] + elementInstruction[2]
 
       treasuresCoords.push({
+        id: `treasure-${index}`,
         horizontally: Number(elementInstruction[1]) !== 0 ? Number(elementInstruction[1]) - 1 : 0,
         vertically: Number(elementInstruction[2]) !== 0 ? Number(elementInstruction[2]) - 1 : 0,
         total: Number(elementInstruction[3]),
@@ -131,12 +133,14 @@ export function elementsInstructionsValidation(
     }
     if (isAdventurerInstruction) {
       coords = elementInstruction[2] + elementInstruction[3]
+
       adventurerCoords.push({
+        id: `adventurer-${index}`,
         name: elementInstruction[1],
         horizontally: Number(elementInstruction[2]) !== 0 ? Number(elementInstruction[2]) - 1 : 0,
         vertically: Number(elementInstruction[3]) !== 0 ? Number(elementInstruction[3]) - 1 : 0,
         orientation: elementInstruction[4],
-        movement: elementInstruction[5],
+        movements: elementInstruction[5],
         priority: index + 1,
       })
     }

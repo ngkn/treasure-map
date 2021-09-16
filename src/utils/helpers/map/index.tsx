@@ -2,8 +2,9 @@ export function addMountain(map: any, mountains: any) {
   const newMap = [...map]
 
   mountains.forEach((mountain: any) => {
-    newMap[mountain.horizontally][mountain.vertically].type = 'mountain'
-    newMap[mountain.horizontally][mountain.vertically].symbol = 'M'
+    newMap[mountain.vertically][mountain.horizontally].id = 'id'
+    newMap[mountain.vertically][mountain.horizontally].type = 'mountain'
+    newMap[mountain.vertically][mountain.horizontally].symbol = 'M'
   })
 
   return newMap
@@ -13,9 +14,10 @@ export function addTreasure(map: any, treasures: any) {
   const newMap = [...map]
 
   treasures.forEach((treasure: any) => {
-    newMap[treasure.horizontally][treasure.vertically].type = 'treasure'
-    newMap[treasure.horizontally][treasure.vertically].symbol = `T(${treasure.total})`
-    newMap[treasure.horizontally][treasure.vertically].total = treasure.total
+    newMap[treasure.vertically][treasure.horizontally].id = treasure.id
+    newMap[treasure.vertically][treasure.horizontally].type = 'treasure'
+    newMap[treasure.vertically][treasure.horizontally].symbol = `T(${treasure.total})`
+    newMap[treasure.vertically][treasure.horizontally].total = treasure.total
   })
 
   return newMap
@@ -24,14 +26,15 @@ export function addTreasure(map: any, treasures: any) {
 export function addAdventurer(map: any, adventurers: any) {
   const newMap = [...map]
 
-  console.log('adventurers :>> ', adventurers)
-
   adventurers.forEach((adventurer: any) => {
-    newMap[adventurer.horizontally][adventurer.vertically].type = 'adventurer'
-    newMap[adventurer.horizontally][adventurer.vertically].symbol = `A(${adventurer.name})`
-    newMap[adventurer.horizontally][adventurer.vertically].orientation = adventurer.orientation
-    newMap[adventurer.horizontally][adventurer.vertically].orientation = adventurer.movement
-    newMap[adventurer.horizontally][adventurer.vertically].priority = adventurer.priority
+    newMap[adventurer.vertically][adventurer.horizontally].id = adventurer.id
+    newMap[adventurer.vertically][adventurer.horizontally].type = 'adventurer'
+    newMap[adventurer.vertically][adventurer.horizontally].symbol = `A(${adventurer.name})`
+    newMap[adventurer.vertically][adventurer.horizontally].orientation = adventurer.orientation
+    newMap[adventurer.vertically][adventurer.horizontally].movements = adventurer.movements
+    newMap[adventurer.vertically][adventurer.horizontally].priority = adventurer.priority
+    newMap[adventurer.vertically][adventurer.horizontally].treasureRecovered = adventurer.treasureRecovered
+    newMap[adventurer.vertically][adventurer.horizontally].isAdventurer = true
   })
 
   return newMap
