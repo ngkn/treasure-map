@@ -68,7 +68,6 @@ const Map = () => {
       const id = setTimeout(() => {
         const { mapUpdated, adventurersUpdated } = moveAdventurers(map, adventurers, widthMap, lengthMap, treasures)
 
-        console.log('adventurers :>> ', adventurers)
         setMap([...mapUpdated])
         setAdventurers([...adventurersUpdated])
       }, 1000)
@@ -79,9 +78,6 @@ const Map = () => {
   }, [remaininMoves])
 
   // ----test---
-  useEffect(() => {
-    console.log('map :>> ', map)
-  }, [map])
 
   return (
     <div className="mapContainer">

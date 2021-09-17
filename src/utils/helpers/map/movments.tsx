@@ -111,12 +111,15 @@ function filterMovement(
           // The adventurer will move on all others cases: plain, treasure
           else {
             // -- Move the adventurer on map Plain or Treasure
-            if (mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].type === 'treasure') {
+            adventurer.horizontally = adventurerAfterMoved.horizontally
+            adventurer.vertically = adventurerAfterMoved.vertically
+            if (
+              mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].type === 'treasure' ||
+              mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].type === 'treasureAdventurer'
+            ) {
               if (mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].total > 0) {
                 mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].total -= 1
                 adventurer.treasureRecovered += 1
-                adventurer.horizontally = adventurerAfterMoved.horizontally
-                adventurer.vertically = adventurerAfterMoved.vertically
 
                 // Update treasure
                 treasuresUpdt.forEach((treasure) => {
@@ -128,19 +131,17 @@ function filterMovement(
                     if (treasure.total > 0) treasure.total -= 1
                   }
                 })
-
-                // Add property of the player in the array case
-                mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].type = 'treasureAdventurer'
-                mapUp[adventurer.vertically][adventurer.horizontally].id = adventurer.id
-                mapUp[adventurer.vertically][adventurer.horizontally].type = 'adventurer'
-                mapUp[adventurer.vertically][adventurer.horizontally].symbol = `A(${adventurer.name})`
-                mapUp[adventurer.vertically][adventurer.horizontally].orientation = adventurer.orientation
-                mapUp[adventurer.vertically][adventurer.horizontally].movements = adventurer.movements
-                mapUp[adventurer.vertically][adventurer.horizontally].priority = adventurer.priority
-                mapUp[adventurer.vertically][adventurer.horizontally].treasureRecovered =
-                  adventurer.treasureRecovered + 1
-                mapUp[adventurer.vertically][adventurer.horizontally].isAdventurer = true
               }
+              // Add property of the player in the array case
+              mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].type = 'treasureAdventurer'
+              mapUp[adventurer.vertically][adventurer.horizontally].id = adventurer.id
+              mapUp[adventurer.vertically][adventurer.horizontally].type = 'adventurer'
+              mapUp[adventurer.vertically][adventurer.horizontally].symbol = `A(${adventurer.name})`
+              mapUp[adventurer.vertically][adventurer.horizontally].orientation = adventurer.orientation
+              mapUp[adventurer.vertically][adventurer.horizontally].movements = adventurer.movements
+              mapUp[adventurer.vertically][adventurer.horizontally].priority = adventurer.priority
+              mapUp[adventurer.vertically][adventurer.horizontally].treasureRecovered = adventurer.treasureRecovered + 1
+              mapUp[adventurer.vertically][adventurer.horizontally].isAdventurer = true
             }
 
             if (mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].type === 'plain') {
