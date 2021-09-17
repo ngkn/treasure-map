@@ -4,9 +4,6 @@ const Output = ({ elementsOutput }: any) => {
   const treasures = elementsOutput.treasuresLine
   const adventurers = elementsOutput.adventurersLine
 
-  console.log('object')
-  console.log('mountains :>> ', elementsOutput.mountainsLine)
-
   return (
     <div>
       <div>{map}</div>

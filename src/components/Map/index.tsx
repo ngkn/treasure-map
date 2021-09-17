@@ -88,14 +88,22 @@ const Map = ({ handleResult }: any) => {
     <div className="mapContainer">
       <div className="mapWrapper">
         {map &&
-          map.map((items) => {
+          map.map((items, indexFirst) => {
             return (
-              // eslint-disable-next-line react/no-array-index-key
-              <div key={uuid()} className="mapItem">
-                {items.map((subItems, sIndex) => {
-                  // eslint-disable-next-line react/no-array-index-key
-                  return <div key={`${subItems}-${sIndex}`}> {subItems.symbol} </div>
-                })}
+              <div className="horizontallyContainer">
+                <div className="indexHorizontally">{indexFirst}</div>
+                <div key={uuid()} className="mapItemContainer">
+                  {items.map((subItems, sIndex) => {
+                    return (
+                      <div className="verticallyContainer">
+                        <div key={uuid()} className="mapItem">
+                          {subItems.symbol}
+                        </div>
+                        {indexFirst === 0 && <div className="indexVertically">{sIndex}</div>}
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
             )
           })}

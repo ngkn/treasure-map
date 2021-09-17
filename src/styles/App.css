@@ -58,6 +58,46 @@
   justify-content: space-between;
 }
 
+.mapItemContainer {
+  width: 5em;
+}
+
 .mapItem {
-  width: 4em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  height: 2em;
+  /* border: 1px black solid; */
+}
+
+.indexHorizontally {
+  position: relative;
+  padding-bottom: 1.5em;
+}
+
+.indexVertically {
+  position: absolute;
+  left: -22%;
+  top: 40%;
+  transform: translateY(-50%);
+}
+
+.horizontallyContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.verticallyContainer {
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.outputContainer {
+  margin-top: 2em;
+}
+
+.outputTitle {
+  text-decoration: underline;
 }

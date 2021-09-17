@@ -37,8 +37,8 @@ const App = () => {
           </div>
           {displayMap && <Map handleResult={handleResult} />}
           {displayResult && (
-            <div>
-              <div>Resultat</div>
+            <div className="outputContainer">
+              <div className="outputTitle">Résultat</div>
               <Output elementsOutput={elementsOutput} />
             </div>
           )}
