@@ -7,10 +7,11 @@ import { MESSAGE_FILE_SUCCESS, MESSAGE_FILE_ERROR } from 'config/constants'
 import FormInstructionsType from 'interfaces/FormInstructionsType'
 import { useGame } from 'context/gameContext'
 
-const FormInstructions = ({ handleMapCreation }: FormInstructionsType) => {
+const FormInstructions = ({ handleMapCreation, resetResult }: FormInstructionsType) => {
   const refTextArea = useRef<HTMLTextAreaElement>(null) // Uncontrolled Components
   const [createMap, setCreateMap] = useState<null | boolean>(null)
-  const { setWidthMap, setLengthMap, setMountains, setTreasures, setAdventurers, setisAlreadyAMap } = useGame()
+  const { isAlreadyAMap, setWidthMap, setLengthMap, setMountains, setTreasures, setAdventurers, setisAlreadyAMap } =
+    useGame()
 
   const handleOnSubmit = (event: FormEvent) => {
     if (!refTextArea.current) return
@@ -39,6 +40,10 @@ const FormInstructions = ({ handleMapCreation }: FormInstructionsType) => {
   useEffect(() => {
     if (createMap) handleMapCreation(createMap)
   }, [createMap])
+
+  useEffect(() => {
+    resetResult(isAlreadyAMap)
+  }, [isAlreadyAMap])
 
   return (
     <>

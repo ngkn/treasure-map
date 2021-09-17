@@ -7,7 +7,7 @@ import { v4 as uuid } from 'uuid'
 import { addAdventurer, addMountain, addTreasure } from 'utils/helpers/map'
 import { moveAdventurers } from 'utils/helpers/map/movments'
 
-const Map = () => {
+const Map = ({ handleResult }: any) => {
   const {
     widthMap,
     lengthMap,
@@ -74,6 +74,11 @@ const Map = () => {
 
       return () => clearTimeout(id)
     }
+    if (remaininMoves === 0) {
+      handleResult({ widthMap, lengthMap, mountains, treasures, adventurers })
+      console.log('remaininMoves :>> ', remaininMoves)
+    }
+
     return undefined
   }, [remaininMoves])
 
