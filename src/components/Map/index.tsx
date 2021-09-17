@@ -79,6 +79,9 @@ const Map = () => {
   }, [remaininMoves])
 
   // ----test---
+  useEffect(() => {
+    console.log('map :>> ', map)
+  }, [map])
 
   return (
     <div className="mapContainer">

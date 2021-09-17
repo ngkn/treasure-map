@@ -89,8 +89,8 @@ export function elementsInstructionsValidation(
   const adventurerCoords: any[] = []
 
   const mapLineInstructionArray = stringToArray(mapLineInstruction)
-  const mapInstructionWidthNumber = Number(mapLineInstructionArray[1])
-  const mapInstructionLengthNumber = Number(mapLineInstructionArray[2])
+  const mapInstructionWidthNumber = Number(mapLineInstructionArray[1]) - 1
+  const mapInstructionLengthNumber = Number(mapLineInstructionArray[2]) - 1
 
   const coordsElements = elementsInstructions.map((instruction: string, index: number) => {
     let coords
@@ -115,30 +115,44 @@ export function elementsInstructionsValidation(
     if (isMountainInstruction) {
       coords = elementInstruction[1] + elementInstruction[2]
 
+      const hori = Number(elementInstruction[1])
+      const verti = Number(elementInstruction[2])
+
       mountainsCoords.push({
         id: `mountain-${index}`,
-        horizontally: Number(elementInstruction[1]) !== 0 ? Number(elementInstruction[1]) - 1 : 0,
-        vertically: Number(elementInstruction[2]) !== 0 ? Number(elementInstruction[2]) - 1 : 0,
+        horizontally: hori,
+        vertically: verti,
       })
     }
     if (isTreasureInstruction) {
       coords = elementInstruction[1] + elementInstruction[2]
 
+      const hori = Number(elementInstruction[1])
+      const verti = Number(elementInstruction[2])
+
       treasuresCoords.push({
         idTreasure: `treasure-${index}`,
-        horizontally: Number(elementInstruction[1]) !== 0 ? Number(elementInstruction[1]) - 1 : 0,
-        vertically: Number(elementInstruction[2]) !== 0 ? Number(elementInstruction[2]) - 1 : 0,
+        horizontally: hori,
+        vertically: verti,
         total: Number(elementInstruction[3]),
       })
     }
     if (isAdventurerInstruction) {
       coords = elementInstruction[2] + elementInstruction[3]
+      const hori = Number(elementInstruction[2])
+      const verti = Number(elementInstruction[3])
+
+      console.log('hori :>> ', hori)
+      console.log('verti :>> ', verti)
+      console.log('---')
+      console.log('mapInstructionWidthNumber :>> ', mapInstructionWidthNumber)
+      console.log('mapInstructionLengthNumber :>> ', mapInstructionLengthNumber)
 
       adventurerCoords.push({
         id: `adventurer-${index}`,
         name: elementInstruction[1],
-        horizontally: Number(elementInstruction[2]) !== 0 ? Number(elementInstruction[2]) - 1 : 0,
-        vertically: Number(elementInstruction[3]) !== 0 ? Number(elementInstruction[3]) - 1 : 0,
+        horizontally: hori,
+        vertically: verti,
         orientation: elementInstruction[4],
         movements: elementInstruction[5],
         priority: index + 1,
@@ -155,6 +169,7 @@ export function elementsInstructionsValidation(
         Number(elementInstruction[2]) > mapInstructionLengthNumber
       ) {
         isElementsValid = false
+        // Put an error message axe can't be equal or up to width/length map number
       }
     }
 
