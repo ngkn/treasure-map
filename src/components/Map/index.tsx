@@ -58,9 +58,10 @@ const Map = ({ handleResult }: any) => {
 
         setRemaininMoves(getRemainingMoves())
       }
+
+      if (adventurers.length === 0) handleResult({ widthMap, lengthMap, mountains, treasures, adventurers })
     }
   }, [mountains, treasures, adventurers, isAlreadyAMap])
-  //  }, [mountains, treasures, adventurers]) // A retirer plus tard ?
 
   // Gestion des mouvements dans la map
   useEffect(() => {
@@ -76,13 +77,10 @@ const Map = ({ handleResult }: any) => {
     }
     if (remaininMoves === 0) {
       handleResult({ widthMap, lengthMap, mountains, treasures, adventurers })
-      console.log('remaininMoves :>> ', remaininMoves)
     }
 
     return undefined
   }, [remaininMoves])
-
-  // ----test---
 
   return (
     <div className="mapContainer">

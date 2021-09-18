@@ -1,5 +1,6 @@
 type AdventurerType = {
   id: string
+  name: string
   horizontally: number
   vertically: number
   movements: string

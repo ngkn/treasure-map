@@ -101,3 +101,11 @@
 .outputTitle {
   text-decoration: underline;
 }
+
+.messageForm {
+  margin-bottom: 2em;
+}
+
+.formEntryFileStyle {
+  margin-bottom: 2em;
+}

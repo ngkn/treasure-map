@@ -14,7 +14,7 @@ export function getResults(mapElements: Record<string, any>) {
       (treasure: any) => `T - ${treasure.horizontally} - ${treasure.vertically} - ${treasure.total}`,
     )
   }
-  if (mapElements.treasures.length) {
+  if (mapElements.adventurers.length) {
     adventurersLine = mapElements.adventurers.map(
       (adventurer: any) =>
         `A - ${adventurer.name} - ${adventurer.horizontally} - ${adventurer.vertically} - ${adventurer.orientation} - ${adventurer.treasureRecovered}`,

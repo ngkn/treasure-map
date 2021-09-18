@@ -1,37 +1,34 @@
 import { useState } from 'react'
-import { GameProvider, useGame } from 'context/gameContext'
+import { GameProvider } from 'context/gameContext'
 
 import { FormInstructions, Map } from 'components'
+import Output from 'components/Output'
+
+import { getResults } from 'utils/helpers/outputResult'
 
 import 'styles/App.css'
-import { getResults } from 'utils/helpers/outputResult'
-import Output from 'components/Output'
 
 const App = () => {
   const [displayMap, setDisplayMap] = useState(false)
   const [displayResult, setDisplayResult] = useState(false)
   const [elementsOutput, setElementsOutput] = useState<any>([])
 
-  const handleMapCreation = (isInstructionsValid: boolean) => {
-    if (isInstructionsValid) setDisplayMap(true)
-  }
+  const handleMapCreation = (isInstructionsValid: boolean) => isInstructionsValid && setDisplayMap(true)
+
+  const resetResult = (isAlreadyAMap: boolean) => isAlreadyAMap && setDisplayResult(false)
 
   const handleResult = (mapElements: Record<string, unknown>) => {
-    // setDisplayResult(isEndInstructions)
     const mapElementsOutput = getResults(mapElements)
+
     setElementsOutput(mapElementsOutput)
     setDisplayResult(true)
-  }
-
-  const resetResult = (isAlreadyAMap: boolean) => {
-    if (isAlreadyAMap) setDisplayResult(false)
   }
 
   return (
     <div className="App">
       <GameProvider>
         <div className="GameContainer">
-          <div>Treasure map</div>
+          <h1>Treasure map</h1>
           <div>
             <FormInstructions handleMapCreation={handleMapCreation} resetResult={resetResult} />
           </div>

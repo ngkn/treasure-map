@@ -93,111 +93,106 @@ function filterMovement(
 
   const adventurerThatWillMove: any = checkDuplicateMove(adventurersNew)
 
-  advUpdateAgain.forEach(
-    (adventurer: any) => {
-      adventurerThatWillMove.forEach((advMove: any) => {
-        if (advMove.id === adventurer.id) {
-          // Old and news Coord of adventurer
-          const adventurerAfterMoved = moveForward(adventurer, widthMap, lengthMap)
-          const adventurerOldCoords = { ...adventurer }
+  advUpdateAgain.forEach((adventurer: any) => {
+    adventurerThatWillMove.forEach((advMove: any) => {
+      if (advMove.id === adventurer.id) {
+        // Old and news Coord of adventurer
+        const adventurerAfterMoved = moveForward(adventurer, widthMap, lengthMap)
+        const adventurerOldCoords = { ...adventurer }
 
-          // Mean that the adventurer want to move on a case which contain another adventurer without doesn't have movements anymore
+        // Mean that the adventurer want to move on a case which contain another adventurer without doesn't have movements anymore
+        if (
+          mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].isAdventurer ||
+          mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].type === 'mountain'
+        ) {
+          adventurer.movements = adventurer.movements.substring(1)
+        }
+        // The adventurer will move on all others cases: plain, treasure
+        else {
+          // -- Move the adventurer on map Plain or Treasure
+          adventurer.horizontally = adventurerAfterMoved.horizontally
+          adventurer.vertically = adventurerAfterMoved.vertically
           if (
-            mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].isAdventurer ||
-            mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].type === 'mountain'
+            mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].type === 'treasure' ||
+            mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].type === 'treasureAdventurer'
           ) {
-            adventurer.movements = adventurer.movements.substring(1)
-          }
-          // The adventurer will move on all others cases: plain, treasure
-          else {
-            // -- Move the adventurer on map Plain or Treasure
-            adventurer.horizontally = adventurerAfterMoved.horizontally
-            adventurer.vertically = adventurerAfterMoved.vertically
-            if (
-              mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].type === 'treasure' ||
-              mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].type === 'treasureAdventurer'
-            ) {
-              if (mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].total > 0) {
-                mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].total -= 1
-                adventurer.treasureRecovered += 1
+            if (mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].total > 0) {
+              mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].total -= 1
+              adventurer.treasureRecovered += 1
 
-                // Update treasure
-                treasuresUpdt.forEach((treasure) => {
-                  if (
-                    treasure.idTreasure ===
-                    mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].idTreasure
-                  ) {
-                    // idTreasure
-                    if (treasure.total > 0) treasure.total -= 1
-                  }
-                })
-              }
-              // Add property of the player in the array case
-              mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].type = 'treasureAdventurer'
-              mapUp[adventurer.vertically][adventurer.horizontally].id = adventurer.id
-              mapUp[adventurer.vertically][adventurer.horizontally].type = 'adventurer'
-              mapUp[adventurer.vertically][adventurer.horizontally].symbol = `A(${adventurer.name})`
-              mapUp[adventurer.vertically][adventurer.horizontally].orientation = adventurer.orientation
-              mapUp[adventurer.vertically][adventurer.horizontally].movements = adventurer.movements
-              mapUp[adventurer.vertically][adventurer.horizontally].priority = adventurer.priority
-              mapUp[adventurer.vertically][adventurer.horizontally].treasureRecovered = adventurer.treasureRecovered + 1
-              mapUp[adventurer.vertically][adventurer.horizontally].isAdventurer = true
-            }
-
-            if (mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].type === 'plain') {
-              adventurer.horizontally = adventurerAfterMoved.horizontally
-              adventurer.vertically = adventurerAfterMoved.vertically
-
-              // Add property of the player in the array case
-              mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally] = {}
-              mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].id = adventurer.id
-              mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].type = 'adventurer'
-              mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].symbol = `A(${adventurer.name})`
-              mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].orientation =
-                adventurer.orientation
-              mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].movements = adventurer.movements
-              mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].priority = adventurer.priority
-              mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].treasureRecovered =
-                adventurer.treasureRecovered
-              mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].isAdventurer = true
-            }
-
-            // -- Reset case previous case after adventurer move
-            if (mapUp[adventurerOldCoords.vertically][adventurerOldCoords.horizontally].type !== 'treasureAdventurer') {
-              mapUp[adventurerOldCoords.vertically][adventurerOldCoords.horizontally] = {
-                type: 'plain',
-                symbol: '*',
-                isAdventurer: false,
-                x: adventurerOldCoords.horizontally,
-                y: adventurerOldCoords.vertically,
-              }
-            }
-            if (mapUp[adventurerOldCoords.vertically][adventurerOldCoords.horizontally] === 'treasureAdventurer') {
-              // Check symbol later
-              const { idTreasure } = mapUp[adventurerOldCoords.vertically][adventurerOldCoords.horizontally]
-
-              mapUp[adventurerOldCoords.vertically][adventurerOldCoords.horizontally] = {}
-
-              treasuresUpdt.forEach((treasure: any) => {
-                if (treasure.idTreasure === idTreasure) {
-                  mapUp[adventurerOldCoords.vertically][adventurerOldCoords.horizontally] = {
-                    idTreasure: treasure.idTreasure,
-                    type: 'treasure',
-                    symbol: `T(${treasure.total})`,
-                    total: treasure.total,
-                  }
+              // Update treasure
+              treasuresUpdt.forEach((treasure) => {
+                if (
+                  treasure.idTreasure ===
+                  mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].idTreasure
+                ) {
+                  if (treasure.total > 0) treasure.total -= 1
                 }
               })
             }
-
-            adventurer.movements = adventurer.movements.substring(1)
+            // Add property of the player in the array case
+            mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].type = 'treasureAdventurer'
+            mapUp[adventurer.vertically][adventurer.horizontally].id = adventurer.id
+            mapUp[adventurer.vertically][adventurer.horizontally].type = 'adventurer'
+            mapUp[adventurer.vertically][adventurer.horizontally].symbol = `A(${adventurer.name})`
+            mapUp[adventurer.vertically][adventurer.horizontally].orientation = adventurer.orientation
+            mapUp[adventurer.vertically][adventurer.horizontally].movements = adventurer.movements
+            mapUp[adventurer.vertically][adventurer.horizontally].priority = adventurer.priority
+            mapUp[adventurer.vertically][adventurer.horizontally].treasureRecovered = adventurer.treasureRecovered + 1
+            mapUp[adventurer.vertically][adventurer.horizontally].isAdventurer = true
           }
-        }
-      })
-    },
 
-    // return map, adventurers
-  )
+          if (mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].type === 'plain') {
+            adventurer.horizontally = adventurerAfterMoved.horizontally
+            adventurer.vertically = adventurerAfterMoved.vertically
+
+            // Add property of the player in the array case
+            mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally] = {}
+            mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].id = adventurer.id
+            mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].type = 'adventurer'
+            mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].symbol = `A(${adventurer.name})`
+            mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].orientation =
+              adventurer.orientation
+            mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].movements = adventurer.movements
+            mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].priority = adventurer.priority
+            mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].treasureRecovered =
+              adventurer.treasureRecovered
+            mapUp[adventurerAfterMoved.vertically][adventurerAfterMoved.horizontally].isAdventurer = true
+          }
+
+          // -- Reset case previous case after adventurer move
+          if (mapUp[adventurerOldCoords.vertically][adventurerOldCoords.horizontally].type !== 'treasureAdventurer') {
+            mapUp[adventurerOldCoords.vertically][adventurerOldCoords.horizontally] = {
+              type: 'plain',
+              symbol: '*',
+              isAdventurer: false,
+              x: adventurerOldCoords.horizontally,
+              y: adventurerOldCoords.vertically,
+            }
+          }
+          if (mapUp[adventurerOldCoords.vertically][adventurerOldCoords.horizontally] === 'treasureAdventurer') {
+            // Check symbol later
+            const { idTreasure } = mapUp[adventurerOldCoords.vertically][adventurerOldCoords.horizontally]
+
+            mapUp[adventurerOldCoords.vertically][adventurerOldCoords.horizontally] = {}
+
+            treasuresUpdt.forEach((treasure: any) => {
+              if (treasure.idTreasure === idTreasure) {
+                mapUp[adventurerOldCoords.vertically][adventurerOldCoords.horizontally] = {
+                  idTreasure: treasure.idTreasure,
+                  type: 'treasure',
+                  symbol: `T(${treasure.total})`,
+                  total: treasure.total,
+                }
+              }
+            })
+          }
+
+          adventurer.movements = adventurer.movements.substring(1)
+        }
+      }
+    })
+  })
   return { advUpdateAgain, mapUp }
 }
 
@@ -242,21 +237,17 @@ export function moveAdventurers(
   adventurersUpdated.forEach((adventurer: any) => {
     const { movements } = adventurer
     const firstMovement = movements.slice(0, 1)
-    //    let orientation = adventurer.orientation
 
     if (firstMovement !== 'A') {
       const newOrientation = changeOrientation(firstMovement, adventurer.orientation)
       adventurer.orientation = newOrientation
       adventurer.movements = adventurer.movements.substring(1)
-
-      //
     } else {
       adventurersWithA.push(adventurer)
     }
   })
 
   if (adventurersWithA.length) {
-    // const t = checkDuplicateMove(adventurersWithA)
     const { advUpdateAgain, mapUp } = filterMovement(
       adventurersWithA,
       adventurersUpdated,
@@ -272,20 +263,3 @@ export function moveAdventurers(
 
   return { mapUpdated, adventurersUpdated }
 }
-
-// Check if adventurer with a A will reach the same case
-// check if there is any duplicate coords
-// Clean the position of adventurers who moved
-
-// if(Check all moves. If duplicate next move)
-//     -> avancer le joueur prioritaire
-//     -> Mettre en pause lautre
-
-//  if(no duplicate next move)
-//     if(next case is empty)
-//         -> Avancer le joueur
-
-// if(next move treasure)
-//     -> Player get one treasure
-
-// If a player has no longer movmnt and another one is coming, we need to drop movmnt. if(priority has no longer move ? drop all other)

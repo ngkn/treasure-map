@@ -1,15 +1,15 @@
 import { FormEvent, useEffect, useRef, useState } from 'react'
 
+import { useGame } from 'context/gameContext'
+
 import { instructionsValidation, instructionsToArray } from 'utils/helpers/entryInstructions'
 
-import { MESSAGE_FILE_SUCCESS, MESSAGE_FILE_ERROR } from 'config/constants'
-
 import FormInstructionsType from 'interfaces/FormInstructionsType'
-import { useGame } from 'context/gameContext'
 
 const FormInstructions = ({ handleMapCreation, resetResult }: FormInstructionsType) => {
   const refTextArea = useRef<HTMLTextAreaElement>(null) // Uncontrolled Components
-  const [createMap, setCreateMap] = useState<null | boolean>(null)
+  const [createMap, setCreateMap] = useState<boolean>(false)
+
   const { isAlreadyAMap, setWidthMap, setLengthMap, setMountains, setTreasures, setAdventurers, setisAlreadyAMap } =
     useGame()
 
@@ -17,20 +17,20 @@ const FormInstructions = ({ handleMapCreation, resetResult }: FormInstructionsTy
     if (!refTextArea.current) return
 
     const instructionsArray = instructionsToArray(refTextArea.current.value)
-    const isInstructionsValid = instructionsValidation(instructionsArray)
+    const instructions = instructionsValidation(instructionsArray)
 
-    if (
-      Object.keys(isInstructionsValid).length !== 0 &&
-      isInstructionsValid.constructor === Object &&
-      isInstructionsValid.isElementsValid.isElementsValid
-    ) {
+    const isInstructionsValid = Object.keys(instructions).length !== 0 && instructions.elementsValid.isValid
+
+    if (isInstructionsValid) {
+      // Reset map
       if (createMap) setisAlreadyAMap(true)
 
-      setWidthMap(isInstructionsValid.mapValid.width)
-      setLengthMap(isInstructionsValid.mapValid.length)
-      setMountains(isInstructionsValid.isElementsValid.elements.mountains)
-      setTreasures(isInstructionsValid.isElementsValid.elements.treasures)
-      setAdventurers(isInstructionsValid.isElementsValid.elements.adventurers)
+      setWidthMap(instructions.mapValid.width)
+      setLengthMap(instructions.mapValid.length)
+      setMountains(instructions.elementsValid.mountains)
+      setTreasures(instructions.elementsValid.treasures)
+      setAdventurers(instructions.elementsValid.adventurers)
+
       setCreateMap(true)
     }
 
@@ -39,26 +39,21 @@ const FormInstructions = ({ handleMapCreation, resetResult }: FormInstructionsTy
 
   useEffect(() => {
     if (createMap) handleMapCreation(createMap)
-  }, [createMap])
 
-  useEffect(() => {
     resetResult(isAlreadyAMap)
-  }, [isAlreadyAMap])
+  }, [createMap, isAlreadyAMap])
 
   return (
     <>
-      <form data-test="formEntryFile" onSubmit={handleOnSubmit}>
+      <form data-test="formEntryFile" className="formEntryFileStyle" onSubmit={handleOnSubmit}>
         <div>
           <textarea name="textEntryFile" cols={30} rows={10} ref={refTextArea} />
         </div>
         <button type="submit">Valider</button>
       </form>
-      {createMap !== null && <div>{createMap ? MESSAGE_FILE_SUCCESS : MESSAGE_FILE_ERROR}</div>}
+      {/* {createMap !== null && <div className="messageForm">{createMap ? MESSAGE_FILE_SUCCESS : MESSAGE_FILE_ERROR}</div>} */}
     </>
   )
 }
-
-// getDataFile
-// dataFileValidation
 
 export default FormInstructions
