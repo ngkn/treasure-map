@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useRef, useState } from 'react'
+import { FormEvent, ReactElement, useEffect, useRef, useState } from 'react'
 
 import { useGame } from 'context/gameContext'
 
@@ -6,7 +6,7 @@ import { instructionsValidation, instructionsToArray } from 'utils/helpers/entry
 
 import FormInstructionsType from 'interfaces/FormInstructionsType'
 
-const FormInstructions = ({ handleMapCreation, resetResult }: FormInstructionsType) => {
+const FormInstructions = ({ handleMapCreation, resetResult }: FormInstructionsType): ReactElement => {
   const refTextArea = useRef<HTMLTextAreaElement>(null) // Uncontrolled Components
   const [createMap, setCreateMap] = useState<boolean>(false)
 

@@ -1,3 +1,7 @@
+import AdventurerType from 'interfaces/AdventurerType'
+import MountainType from 'interfaces/MountainType'
+import TreasureType from 'interfaces/TreasureType'
+
 type MapType = {
   id?: string
   idTreasure?: string
@@ -14,7 +18,22 @@ type MapType = {
 }[][]
 
 export type MapComponentType = {
-  handleResult: (mapElements: Record<string, unknown>) => void
+  handleResult: (mapElements: MapElementsType) => void
+}
+
+export type MapElementsType = {
+  widthMap: number
+  lengthMap: number
+  mountains: MountainType[]
+  treasures: TreasureType[]
+  adventurers: AdventurerType[]
+}
+
+export type MapElementsOutputType = {
+  mapLine: string
+  mountainsLine: string[]
+  treasuresLine: string[]
+  adventurersLine: string[]
 }
 
 export default MapType

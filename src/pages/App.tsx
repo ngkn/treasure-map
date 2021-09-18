@@ -7,17 +7,18 @@ import Output from 'components/Output'
 import { getResults } from 'utils/helpers/outputResult'
 
 import 'styles/App.css'
+import { MapElementsOutputType, MapElementsType } from 'interfaces/MapType'
 
 const App = () => {
   const [displayMap, setDisplayMap] = useState(false)
   const [displayResult, setDisplayResult] = useState(false)
-  const [elementsOutput, setElementsOutput] = useState<any>([])
+  const [elementsOutput, setElementsOutput] = useState<MapElementsOutputType | null | undefined>()
 
   const handleMapCreation = (isInstructionsValid: boolean) => isInstructionsValid && setDisplayMap(true)
 
   const resetResult = (isAlreadyAMap: boolean) => isAlreadyAMap && setDisplayResult(false)
 
-  const handleResult = (mapElements: Record<string, unknown>) => {
+  const handleResult = (mapElements: MapElementsType) => {
     const mapElementsOutput = getResults(mapElements)
 
     setElementsOutput(mapElementsOutput)
@@ -35,7 +36,7 @@ const App = () => {
           {displayMap && <Map handleResult={handleResult} />}
           {displayResult && (
             <div className="outputContainer">
-              <div className="outputTitle">Résultat</div>
+              <h3 className="outputTitle">Résultat</h3>
               <Output elementsOutput={elementsOutput} />
             </div>
           )}

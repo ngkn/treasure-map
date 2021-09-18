@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 
 import { useGame } from 'context/gameContext'
 
@@ -10,7 +10,7 @@ import { moveAdventurers } from 'utils/helpers/map/movments'
 
 import MapType, { MapComponentType } from 'interfaces/MapType'
 
-const Map = ({ handleResult }: MapComponentType) => {
+const Map = ({ handleResult }: MapComponentType): ReactElement => {
   const {
     widthMap,
     lengthMap,
@@ -79,8 +79,7 @@ const Map = ({ handleResult }: MapComponentType) => {
 
       return () => clearTimeout(id)
     }
-
-    handleResult({ widthMap, lengthMap, mountains, treasures, adventurers })
+    if (remaininMoves === 0) handleResult({ widthMap, lengthMap, mountains, treasures, adventurers })
   }, [remaininMoves])
 
   return (
@@ -89,15 +88,13 @@ const Map = ({ handleResult }: MapComponentType) => {
         {map &&
           map.map((items, indexFirst) => {
             return (
-              <div className="horizontallyContainer">
+              <div key={uuid()} className="horizontallyContainer">
                 <div className="indexHorizontally">{indexFirst}</div>
-                <div key={uuid()} className="mapItemContainer">
+                <div className="mapItemContainer">
                   {items.map((subItems, sIndex) => {
                     return (
-                      <div className="verticallyContainer">
-                        <div key={uuid()} className="mapItem">
-                          {subItems.symbol}
-                        </div>
+                      <div key={uuid()} className="verticallyContainer">
+                        <div className="mapItem">{subItems.symbol}</div>
                         {indexFirst === 0 && <div className="indexVertically">{sIndex}</div>}
                       </div>
                     )
