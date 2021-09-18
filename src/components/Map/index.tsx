@@ -1,5 +1,6 @@
-import { useGame } from 'context/gameContext'
 import { useEffect, useState } from 'react'
+
+import { useGame } from 'context/gameContext'
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuid } from 'uuid'
@@ -7,7 +8,9 @@ import { v4 as uuid } from 'uuid'
 import { addAdventurer, addMountain, addTreasure } from 'utils/helpers/map'
 import { moveAdventurers } from 'utils/helpers/map/movments'
 
-const Map = ({ handleResult }: any) => {
+import MapType, { MapComponentType } from 'interfaces/MapType'
+
+const Map = ({ handleResult }: MapComponentType) => {
   const {
     widthMap,
     lengthMap,
@@ -30,7 +33,7 @@ const Map = ({ handleResult }: any) => {
     })),
   )
 
-  const [map, setMap] = useState(mapDefault)
+  const [map, setMap] = useState<MapType>(mapDefault)
 
   const [remaininMoves, setRemaininMoves] = useState<number>()
 
@@ -39,7 +42,7 @@ const Map = ({ handleResult }: any) => {
     setisAlreadyAMap(false)
   }
 
-  // Gestion des éléments dans la map
+  // Gestion de l'ajout des éléments dans la map
   useEffect(() => {
     if (isAlreadyAMap) {
       resetMap()
@@ -64,6 +67,7 @@ const Map = ({ handleResult }: any) => {
   }, [mountains, treasures, adventurers, isAlreadyAMap])
 
   // Gestion des mouvements dans la map
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
     if (remaininMoves) {
       const id = setTimeout(() => {
@@ -75,11 +79,8 @@ const Map = ({ handleResult }: any) => {
 
       return () => clearTimeout(id)
     }
-    if (remaininMoves === 0) {
-      handleResult({ widthMap, lengthMap, mountains, treasures, adventurers })
-    }
 
-    return undefined
+    handleResult({ widthMap, lengthMap, mountains, treasures, adventurers })
   }, [remaininMoves])
 
   return (

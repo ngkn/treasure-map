@@ -1,8 +1,12 @@
-export function addMountain(map: any, mountains: any) {
+import AdventurerType from 'interfaces/AdventurerType'
+import MapType from 'interfaces/MapType'
+import MountainType from 'interfaces/MountainType'
+import TreasureType from 'interfaces/TreasureType'
+
+export function addMountain(map: MapType, mountains: MountainType[]): MapType {
   const newMap = [...map]
 
-  mountains.forEach((mountain: any) => {
-    newMap[mountain.vertically][mountain.horizontally].id = 'id'
+  mountains.forEach((mountain: MountainType) => {
     newMap[mountain.vertically][mountain.horizontally].type = 'mountain'
     newMap[mountain.vertically][mountain.horizontally].symbol = 'M'
   })
@@ -10,10 +14,10 @@ export function addMountain(map: any, mountains: any) {
   return newMap
 }
 
-export function addTreasure(map: any, treasures: any) {
+export function addTreasure(map: MapType, treasures: TreasureType[]): MapType {
   const newMap = [...map]
 
-  treasures.forEach((treasure: any) => {
+  treasures.forEach((treasure: TreasureType) => {
     newMap[treasure.vertically][treasure.horizontally].idTreasure = treasure.idTreasure
     newMap[treasure.vertically][treasure.horizontally].type = 'treasure'
     newMap[treasure.vertically][treasure.horizontally].symbol = `T(${treasure.total})`
@@ -23,10 +27,10 @@ export function addTreasure(map: any, treasures: any) {
   return newMap
 }
 
-export function addAdventurer(map: any, adventurers: any) {
+export function addAdventurer(map: MapType, adventurers: AdventurerType[]): MapType {
   const newMap = [...map]
 
-  adventurers.forEach((adventurer: any) => {
+  adventurers.forEach((adventurer: AdventurerType) => {
     newMap[adventurer.vertically][adventurer.horizontally].id = adventurer.id
     newMap[adventurer.vertically][adventurer.horizontally].type = 'adventurer'
     newMap[adventurer.vertically][adventurer.horizontally].symbol = `A(${adventurer.name})`
