@@ -71,10 +71,10 @@ const Map = ({ handleResult }: MapComponentType) => {
   useEffect(() => {
     if (remaininMoves) {
       const id = setTimeout(() => {
-        const { mapUpdated, adventurersUpdated } = moveAdventurers(map, adventurers, widthMap, lengthMap, treasures)
+        const { mapCopy, adventurersCopy } = moveAdventurers({ map, widthMap, lengthMap, adventurers, treasures })
 
-        setMap([...mapUpdated])
-        setAdventurers([...adventurersUpdated])
+        setMap([...mapCopy])
+        setAdventurers([...adventurersCopy])
       }, 1000)
 
       return () => clearTimeout(id)

@@ -1,8 +1,8 @@
 type MapType = {
   id?: string
   idTreasure?: string
-  type: string
-  symbol: string
+  type?: string
+  symbol?: string
   isAdventurer?: boolean
   x?: number
   y?: number
