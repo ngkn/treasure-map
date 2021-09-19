@@ -2,7 +2,7 @@ import { FormEvent, ReactElement, useEffect, useRef, useState } from 'react'
 
 import { useGame } from 'context/gameContext'
 
-import { instructionsValidation, instructionsToArray } from 'utils/helpers/entryInstructions'
+import { instructionsValidation, instructionsToArray } from 'utils/helpers/form'
 
 import FormInstructionsType from 'interfaces/FormInstructionsType'
 

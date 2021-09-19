@@ -5,7 +5,15 @@ import MoveAdventurersType from 'interfaces/MoveAdventurersType'
 import NextCoordsType from 'interfaces/NextCoordsType'
 import TreasureType from 'interfaces/TreasureType'
 
-function checkDuplicateMove(adventurersWithMovementForward: AdventurerType[]) {
+/**
+ * Verify if there are adventurers that will go on the same next case
+ * If this is the case, it filters and keep adventurers with high priority to move this turn
+ *
+ * @param {Array} adventurersWithMovementForward adventurers with "A" in movement this turn
+ *
+ * @returns {Array} adventurers that will move this turn based on their priority
+ */
+export function checkDuplicateMove(adventurersWithMovementForward: AdventurerType[]) {
   let nextCoords: NextCoordsType = []
   const adventurersWithMovementForwardCopy = [...adventurersWithMovementForward]
 
@@ -62,7 +70,17 @@ function checkDuplicateMove(adventurersWithMovementForward: AdventurerType[]) {
   return adventurersPriority
 }
 
-function moveForward(adventurer: AdventurerType, widthMap: number, lengthMap: number) {
+/**
+ * Verify if there are adventurers that will go on the same next case
+ * If this is the case, it filters and keep adventurers with high priority to move this turn
+ *
+ * @param {AdventurerType} adventurer adventurer object
+ * @param {AdventurerType} widthMap width of map
+ * @param {AdventurerType} lengthMap length of map
+ *
+ * @returns {AdventurerType} adventurer with new coords after move forward
+ */
+export function moveForward(adventurer: AdventurerType, widthMap: number, lengthMap: number) {
   const adventurerCopy = { ...adventurer }
 
   if (adventurerCopy.orientation === 'N') {
@@ -81,7 +99,19 @@ function moveForward(adventurer: AdventurerType, widthMap: number, lengthMap: nu
   return adventurerCopy
 }
 
-function filterMovement(
+/**
+ * Update informations about map, adventurers, treasures depend on adventurer move
+ *
+ * @param {MapType} mapCopy map array multidimensional
+ * @param {AdventurerType} adventurersWithMovementForward adventurers with "A" for movement
+ * @param {AdventurerType} adventurersCopy adventurers array
+ * @param {TreasureType} treasures treasures array
+ * @param {number} widthMap width of map
+ * @param {number} lengthMap length of map
+ *
+ * @returns {MapType, AdventurerType} new map and adventurers array after move
+ */
+export function filterMovement(
   mapCopy: MapType,
   adventurersWithMovementForward: AdventurerType[],
   adventurersCopy: AdventurerType[],
@@ -198,6 +228,14 @@ function filterMovement(
   return { adventurersClone, mapClone }
 }
 
+/**
+ * Change adventurer orientation depend on his movement
+ *
+ * @param {string} firstMovement movement this turn of an adventurer
+ * @param {string} orientation orientation of an adventurer
+ *
+ * @returns {string} return new adventurer orientation
+ */
 export function changeOrientation(firstMovement: string, orientation: string): string {
   switch (true) {
     case orientation === 'N' && firstMovement === 'D':
@@ -221,6 +259,17 @@ export function changeOrientation(firstMovement: string, orientation: string): s
   }
 }
 
+/**
+ * Update informations about map, adventurers, treasures depend on adventurer move
+ *
+ * @param {MapType} map map array multidimensional
+ * @param {number} widthMap width of map
+ * @param {number} lengthMap length of map
+ * @param {AdventurerType} adventurers adventurers array
+ * @param {TreasureType} treasures treasures array
+ *
+ * @returns {MapType, AdventurerType} new map and adventurers array after move
+ */
 export function moveAdventurers({ map, widthMap, lengthMap, adventurers, treasures }: MoveAdventurersType): {
   mapCopy: MapType
   adventurersCopy: AdventurerType[]

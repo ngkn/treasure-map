@@ -5,6 +5,7 @@ import TreasureType from 'interfaces/TreasureType'
 type MapType = {
   id?: string
   idTreasure?: string
+  name?: string
   type?: string
   symbol?: string
   isAdventurer?: boolean

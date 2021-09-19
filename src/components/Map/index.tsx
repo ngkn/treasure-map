@@ -6,7 +6,7 @@ import { useGame } from 'context/gameContext'
 import { v4 as uuid } from 'uuid'
 
 import { addAdventurer, addMountain, addTreasure } from 'utils/helpers/map'
-import { moveAdventurers } from 'utils/helpers/map/movments'
+import { moveAdventurers } from 'utils/helpers/map/movements'
 
 import MapType, { MapComponentType } from 'interfaces/MapType'
 

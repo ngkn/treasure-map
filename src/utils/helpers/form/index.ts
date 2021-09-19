@@ -27,7 +27,6 @@ export function instructionsToArray(instructions: string): string[] {
 
 /**
  * Gets one line of string type and transforms it into an array
- * where each line becomes an item.
  *
  * @param {string} line line of instruction in string type
  *
@@ -78,12 +77,11 @@ export function mapInstructionValidation(mapInstruction: string, instructionsTot
 
 /**
  * Validate instructions of elements by checking it
- * structure, shape, numbers of cells and elements
  *
  * @param {array} elementsInstructions list of instructions
  * @param {string} mapLineInstruction the instruction line that refers to the size of the map
  *
- * @returns {boolean} map instruction is correct or not
+ * @returns {object} map instruction is correct or not
  */
 export function elementsInstructionsValidation(
   elementsInstructions: string[],

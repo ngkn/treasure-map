@@ -32,6 +32,7 @@ export function addAdventurer(map: MapType, adventurers: AdventurerType[]): MapT
 
   adventurers.forEach((adventurer: AdventurerType) => {
     newMap[adventurer.vertically][adventurer.horizontally].id = adventurer.id
+    newMap[adventurer.vertically][adventurer.horizontally].name = adventurer.name
     newMap[adventurer.vertically][adventurer.horizontally].type = 'adventurer'
     newMap[adventurer.vertically][adventurer.horizontally].symbol = `A(${adventurer.name})`
     newMap[adventurer.vertically][adventurer.horizontally].orientation = adventurer.orientation
