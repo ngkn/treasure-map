@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/treasure-map/static/css/main.2ee4bef1.chunk.css",
+    "main.js": "/treasure-map/static/js/main.79f6ecfd.chunk.js",
+    "main.js.map": "/treasure-map/static/js/main.79f6ecfd.chunk.js.map",
+    "runtime-main.js": "/treasure-map/static/js/runtime-main.5cd084b2.js",
+    "runtime-main.js.map": "/treasure-map/static/js/runtime-main.5cd084b2.js.map",
+    "static/js/2.8176fe8d.chunk.js": "/treasure-map/static/js/2.8176fe8d.chunk.js",
+    "static/js/2.8176fe8d.chunk.js.map": "/treasure-map/static/js/2.8176fe8d.chunk.js.map",
+    "static/js/3.bb1b99f8.chunk.js": "/treasure-map/static/js/3.bb1b99f8.chunk.js",
+    "static/js/3.bb1b99f8.chunk.js.map": "/treasure-map/static/js/3.bb1b99f8.chunk.js.map",
+    "index.html": "/treasure-map/index.html",
+    "static/css/main.2ee4bef1.chunk.css.map": "/treasure-map/static/css/main.2ee4bef1.chunk.css.map",
+    "static/js/2.8176fe8d.chunk.js.LICENSE.txt": "/treasure-map/static/js/2.8176fe8d.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5cd084b2.js",
+    "static/js/2.8176fe8d.chunk.js",
+    "static/css/main.2ee4bef1.chunk.css",
+    "static/js/main.79f6ecfd.chunk.js"
+  ]
+}
